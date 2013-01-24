@@ -30,7 +30,9 @@
  * allocate <i>at least</i> twice the as many ints as the largest value
  * you store.
  *
- * @author kamstrup
+ * License: SparseSet.java is public domain
+ *
+ * @author Mikkel Kamstrup Erlandsen
  */
 public final class SparseSet {
 
