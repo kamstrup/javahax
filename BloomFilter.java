@@ -53,38 +53,11 @@ public abstract class BloomFilter<T> {
         h *= 0x2127599bf4325c37L;
         h ^= h >>> 47;
         return (int)h;
-   }
-
-
-    public static void main (String[] args) {
-        BloomFilter<String> f = BloomFilter.create(128, 16, JAVA_HASH);
-        for (int i = 0; i < 100; i++) {
-            f.add(i + "");
-        }
-
-        for (int i = 0; i < 100; i++) {
-            if (!f.maybeContains(i+"")) {
-                throw new Error(i + "");
-            }
-        }
-
-        List<Integer> bad = new ArrayList<>();
-        List<Integer> good = new ArrayList<>();
-        for (int i = 100; i < 1000; i++) {
-            if (f.maybeContains(i+"")) {
-                bad.add(i);
-            } else {
-                good.add(i);
-            }
-        }
-
-        System.out.println("BAD " + bad);
-        System.out.println("GOOD " + good);
     }
 
     private static class DynamicBloomFilter<T> extends BloomFilter<T> {
 
-        protected final BitSet bits;
+        protected final BitField bits;
         protected final int m;
         protected final int k;
         protected final HashFunc<? super T> func;
@@ -95,7 +68,7 @@ public abstract class BloomFilter<T> {
             this.k = k;
             this.func = func;
 
-            bits = new BitSet(m);
+            bits = BitField.create(m);
         }
 
         @Override
@@ -134,7 +107,7 @@ public abstract class BloomFilter<T> {
             return count;
         }
 
-        public BitSet getRawBits() {
+        public BitField getRawBits() {
             return bits;
         }
     }
@@ -190,5 +163,29 @@ public abstract class BloomFilter<T> {
         }
     }
 
+    public static void main (String[] args) {
+        BloomFilter<String> f = BloomFilter.create(128, 16, JAVA_HASH);
+        for (int i = 0; i < 100; i++) {
+            f.add(i + "");
+        }
 
+        for (int i = 0; i < 100; i++) {
+            if (!f.maybeContains(i+"")) {
+                throw new Error(i + "");
+            }
+        }
+
+        List<Integer> bad = new ArrayList<>();
+        List<Integer> good = new ArrayList<>();
+        for (int i = 100; i < 1000; i++) {
+            if (f.maybeContains(i+"")) {
+                bad.add(i);
+            } else {
+                good.add(i);
+            }
+        }
+
+        System.out.println("BAD " + bad);
+        System.out.println("GOOD " + good);
+    }
 }
