@@ -8,6 +8,7 @@
  *  - javadocs
  *  - size()
  *  - trim() returning a compacted, readdonly,  version that does not use POT hashing but just modulo.
+ *  - public int longestCommonPrefix(CharSequence chars)
  */
 public class Trie    {
 
